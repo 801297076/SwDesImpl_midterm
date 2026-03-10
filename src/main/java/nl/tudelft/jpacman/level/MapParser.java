@@ -66,22 +66,40 @@ public class MapParser {
         int height = map[0].length;
 
         Square[][] grid = new Square[width][height];
-
         List<Ghost> ghosts = new ArrayList<>();
         List<Square> startPositions = new ArrayList<>();
 
-        makeGrid(map, width, height, grid, ghosts, startPositions);
+        GridContext context = new GridContext(map, width, height, grid, ghosts, startPositions);
+        makeGrid(context);
 
-        Board board = boardCreator.createBoard(grid);
-        return levelCreator.createLevel(board, ghosts, startPositions);
+        Board board = boardCreator.createBoard(context.grid);
+        return levelCreator.createLevel(board, context.ghosts, context.startPositions);
     }
 
-    private void makeGrid(char[][] map, int width, int height,
-            Square[][] grid, List<Ghost> ghosts, List<Square> startPositions) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                char c = map[x][y];
-                addSquare(grid, ghosts, startPositions, x, y, c);
+    private static class GridContext {
+        private final char[][] map;
+        private final int width;
+        private final int height;
+        private final Square[][] grid;
+        private final List<Ghost> ghosts;
+        private final List<Square> startPositions;
+
+        GridContext(char[][] map, int width, int height,
+                Square[][] grid, List<Ghost> ghosts, List<Square> startPositions) {
+            this.map = map;
+            this.width = width;
+            this.height = height;
+            this.grid = grid;
+            this.ghosts = ghosts;
+            this.startPositions = startPositions;
+        }
+    }
+
+    private void makeGrid(GridContext context) {
+        for (int x = 0; x < context.width; x++) {
+            for (int y = 0; y < context.height; y++) {
+                char c = context.map[x][y];
+                addSquare(context.grid, context.ghosts, context.startPositions, x, y, c);
             }
         }
     }
