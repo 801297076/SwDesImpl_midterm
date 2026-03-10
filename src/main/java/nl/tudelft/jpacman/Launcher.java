@@ -58,7 +58,7 @@ public class Launcher {
      * Set the name of the file containing this level's map.
      *
      * @param fileName
-     *            Map to be used.
+     *                 Map to be used.
      * @return Level corresponding to the given map.
      */
     public Launcher withMapFile(String fileName) {
@@ -153,7 +153,7 @@ public class Launcher {
      * Adds key events UP, DOWN, LEFT and RIGHT to a game.
      *
      * @param builder
-     *            The {@link PacManUiBuilder} that will provide the UI.
+     *                The {@link PacManUiBuilder} that will provide the UI.
      */
     protected void addSinglePlayerKeys(final PacManUiBuilder builder) {
         builder.addKey(KeyEvent.VK_UP, moveTowardsDirection(Direction.NORTH))
@@ -163,10 +163,14 @@ public class Launcher {
     }
 
     private Action moveTowardsDirection(Direction direction) {
-        return () -> {
-            assert game != null;
-            getGame().move(getSinglePlayer(getGame()), direction);
-        };
+        return () -> moveSinglePlayer(direction);
+    }
+
+    private void moveSinglePlayer(Direction direction) {
+        assert game != null;
+        Game currentGame = getGame();
+        Player player = getSinglePlayer(currentGame);
+        currentGame.move(player, direction);
     }
 
     private Player getSinglePlayer(final Game game) {
@@ -203,9 +207,9 @@ public class Launcher {
      * Main execution method for the Launcher.
      *
      * @param args
-     *            The command line arguments - which are ignored.
+     *             The command line arguments - which are ignored.
      * @throws IOException
-     *             When a resource could not be read.
+     *                     When a resource could not be read.
      */
     public static void main(String[] args) throws IOException {
         new Launcher().launch();
