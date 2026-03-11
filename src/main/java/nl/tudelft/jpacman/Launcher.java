@@ -186,10 +186,14 @@ public class Launcher {
      */
     public void launch() {
         makeGame();
+        pacManUI = buildUI();
+        pacManUI.start();
+    }
+
+    private PacManUI buildUI() {
         PacManUiBuilder builder = new PacManUiBuilder().withDefaultButtons();
         addSinglePlayerKeys(builder);
-        pacManUI = builder.build(getGame());
-        pacManUI.start();
+        return builder.build(getGame());
     }
 
     /**
